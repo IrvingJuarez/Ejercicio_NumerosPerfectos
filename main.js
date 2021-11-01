@@ -1,11 +1,11 @@
 let btn = document.querySelector(".send-btn");
 let resultSection = document.querySelector(".main-result");
 let resultSpan = document.querySelector(".result")
-let limit, divisibles, divisiblesSum, perfectNums;
+let limit, divisibles, perfectNums;
 
 btn.addEventListener("click", () => {
   limit = document.querySelector("input[type=text]").value;
-  if(limit <= 0){
+  if(limit <= 1){
     showResults(false);
   }else{
     perfectNums = [];
@@ -15,12 +15,13 @@ btn.addEventListener("click", () => {
 
 const getPerfects = (limit) => {
   if (limit > 1) {
-    for (let i = 1; i < limit; i++) {
-      divisibles = [];
-      divisiblesSum = 0;
+    divisibles = [];
 
-      if (isPerfect(i)) {
-        perfectNums.push(i);
+    if(limit > 6){
+      for (let i = 6; i < limit; i++) {
+        if (isPerfect(i)) {
+          perfectNums.push(i);
+        }
       }
     }
 
@@ -48,26 +49,23 @@ const showResults = (flag) => {
 }
 
 const isPerfect = (num) => {
-  for (let j = 1; j < num; j++) {
+  for (let j = 2; j <= num/2; j++) {
     if (num % j === 0) {
       divisibles.push(j);
     }
   }
 
-  if (divisibles) {
-    addUp(divisibles);
-    if (divisiblesSum === num) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  return false;
+  return addUp(divisibles);
 };
 
 const addUp = (arr) => {
-  divisiblesSum = arr.reduce((a, b) => {
-    return a + b;
-  }, 0);
+  if(!arr){
+    return false;
+  }
+
+  if( arr.reduce( (a,b) => {return a+b}, 1 ) ){
+    return true
+  }else{
+    return false
+  }
 };
